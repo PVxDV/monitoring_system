@@ -2,12 +2,17 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-  metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
+        exclude: "*"
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost/127.0.0.1:9092, localhost/127.0.0.1:9093
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

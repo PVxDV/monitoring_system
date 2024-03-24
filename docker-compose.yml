@@ -5,57 +5,114 @@ volumes:
   metrics_kafka:
 
 services:
-  consumer_service_db:
-    image: postgres:latest
-    restart: on-failure
-    environment:
-      POSTGRES_USER: cs
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: consumer_service_db
-    volumes:
-      - consumer_service_db_pg:/var/lib/postgresql/data
-    ports:
-      - "127.0.0.1:5432:5432"
-    networks:
-      monitoring_system:
+  #  consumer_service_db:
+  #    image: postgres:latest
+  #    restart: on-failure
+  #    environment:
+  #      POSTGRES_USER: cs
+  #      POSTGRES_PASSWORD: password
+  #      POSTGRES_DB: consumer_service_db
+  #    volumes:
+  #      - consumer_service_db_pg:/var/lib/postgresql/data
+  #    ports:
+  #      - "127.0.0.1:5432:5432"
+  #    networks:
+  #      monitoring_system:
 
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "127.0.0.1:2181:2181"
     networks:
       monitoring_system:
 
-  kafka:
+  kafka1:
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
-    image: wurstmeister/kafka
     ports:
-      - "127.0.0.1:9092:9092"
+      - "9092:9092"
+      # - "127.0.0.1:9092:9092"
+    hostname: kafka1
     environment:
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
     volumes:
-      - metrics_kafka:/var/run/kafka
-    networks:
-      monitoring_system:
-#  supplier_service:
-#    container_name: supplier
+      - metrics_kafka:/var/run/kafka1
+#    networks:
+#      monitoring_system:
+
+  kafka2:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "9093:9093"
+      #- "127.0.0.1:9093:9093"
+    hostname: kafka2
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+    volumes:
+      - metrics_kafka:/var/run/kafka2
+#    networks:
+#      monitoring_system:
+
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui
+#    container_name: kafka-ui
+#    ports:
+#      - 8090:8082
 #    restart: always
-#    build: ./supplier_service
+#    environment:
+#      - KAFKA_CLUSTERS_0_NAME=local
+#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:9092,kafka2:9093
+#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+#    links:
+#      - kafka1
+#      - kafka2
+#      - zookeeper
+
+
+#  metrics_producer:
+#    container_name: producer
+#    restart: always
+#    build: ./metrics_producer
 #    ports:
 #      - "8081:8081"
 #    depends_on:
-#      - supplier_service_db
+#      - kafka1
+#      - kafka2
+#    environment:
+#      JAVA_OPTS: '-Xmx512m'
+#    networks:
+#      monitoring_system:
+
+
+#  supplier_service:
+#    container_name: producer
+#    restart: always
+#    build: ./metrics_producer
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - kafka
 #    environment:
 #      SPRING_DATASOURCE_URL: 'jdbc:postgresql://supplier_service_db:5432/supplier_service_db'
 #      JAVA_OPTS: '-Xmx512m'
 #    networks:
-#      suppliercosumer:
-#
+#      monitoring_system:
 #  consumer_service:
 #    container_name: consumer
 #    restart: always
