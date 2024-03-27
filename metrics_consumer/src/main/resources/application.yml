@@ -1,16 +1,29 @@
 spring:
-  application:
-    name: consumer_service
   datasource:
-    username: sc
+    username: mc
     password: password
     driver-class-name: org.postgresql.Driver
-    name: consumer_service_db
-    url: jdbc:postgresql://localhost:5432/consumer_service_db
+    name: metrics_consumer_db
+    url: jdbc:postgresql://localhost:5432/metrics_consumer_db
   jpa:
     properties:
       hibernate:
         ddl-auto: create-drop
     generate-ddl: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: metrics-events
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "com.pvxdv.*"
+
 server:
-  port: 8081
+  port: 8080
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

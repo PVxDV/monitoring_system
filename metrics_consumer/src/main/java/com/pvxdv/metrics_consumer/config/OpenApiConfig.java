@@ -1,4 +1,4 @@
-package com.pvxdv.metrics_producer.config;
+package com.pvxdv.metrics_consumer.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Kafka Example App - Metrics Producer Service",
+                title = "Kafka Example App - Metrics Consumer Service",
                 description = "Home Work #2. Inno.tech.ru course", version = "1.0.0",
                 contact = @Contact(
                         name = "Ryzhikh Pavel",

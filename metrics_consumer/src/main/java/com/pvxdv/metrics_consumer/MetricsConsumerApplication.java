@@ -1,13 +1,13 @@
-package com.pvxdv.consumer_service;
+package com.pvxdv.metrics_consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ConsumerServiceApplication {
+public class MetricsConsumerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConsumerServiceApplication.class, args);
+        SpringApplication.run(MetricsConsumerApplication.class, args);
     }
 
 }

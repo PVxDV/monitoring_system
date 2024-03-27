@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class MetricsScheduler {
 
     private final MetricsService metricsService;
-    @Scheduled(fixedDelay = 4_000)
+    @Scheduled(fixedDelay = 5_000)
     public void sendMetrics(){
         metricsService.sendMetricsAuto();
     }

@@ -1,5 +1,6 @@
 package com.pvxdv.metrics_producer.error;
 
+import com.pvxdv.metrics_producer.exception.KafkaException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,14 @@ public class ExceptionApiHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> otherExceptionResolve(Exception e){
         log.error(e.getMessage(), e);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorMessage(new Date(),e.getMessage()));
+    }
+
+    @ExceptionHandler(KafkaException.class)
+    public ResponseEntity<ErrorMessage> resourceNotFoundExceptionResolve(KafkaException e){
+        log.error(e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorMessage(new Date(),e.getMessage()));
