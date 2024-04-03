@@ -64,8 +64,8 @@ public class KafkaProducerConfig {
     NewTopic createTopic() {
         return TopicBuilder.name("metrics-topic")
                 .partitions(3)
-//                .replicas(2)
-//                .configs(Map.of("min.insync.replicas", "2"))
+                .replicas(3)
+                .configs(Map.of("min.insync.replicas", "2"))
                 .build();
     }
 }

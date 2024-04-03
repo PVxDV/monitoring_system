@@ -1,6 +1,6 @@
-package com.pvxdv.metrics_consumer.Mapper.impl;
+package com.pvxdv.metrics_consumer.mapper.impl;
 
-import com.pvxdv.metrics_consumer.Mapper.Mapper;
+import com.pvxdv.metrics_consumer.mapper.Mapper;
 import com.pvxdv.metrics_consumer.event.MetricEvent;
 import com.pvxdv.metrics_consumer.model.Metric;
 import org.springframework.stereotype.Component;

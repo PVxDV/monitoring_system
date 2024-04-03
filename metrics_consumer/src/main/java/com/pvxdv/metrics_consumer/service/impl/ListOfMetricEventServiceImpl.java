@@ -1,6 +1,6 @@
 package com.pvxdv.metrics_consumer.service.impl;
 
-import com.pvxdv.metrics_consumer.Mapper.impl.MetricEventToMetricMapper;
+import com.pvxdv.metrics_consumer.mapper.impl.MetricEventToMetricMapper;
 import com.pvxdv.metrics_consumer.event.ListOfMetricEvent;
 import com.pvxdv.metrics_consumer.model.Metric;
 import com.pvxdv.metrics_consumer.repository.MetricRepository;
